@@ -1,3 +1,29 @@
+#kali live persistent, max version to support devicemapper: sudo apt install docker-ce=5:24.0.9-1~debian.12~bookworm docker-ce-cli=5:24.0.9-1~debian.12~bookworm containerd.io=1.6.28-1
+$ cat .env
+GEMINI_API_KEY="AI...."  #aistudio key,  1000 requests
+PREFERRED_PROVIDER="google"
+BIG_MODEL="gemini-3-pro-preview"
+SMALL_MODEL="gemini-flash-latest"
+$ docker run -d --env-file .env -p 8082:8082 ghcr.io/1rgs/claude-code-proxy:main
+$ ss -tuwanp | grep 8082
+tcp   LISTEN     0      4096                                     0.0.0.0:8082          0.0.0.0:*
+$ $ cat ~/.claude/settings.json
+{
+  "sandbox": {
+    "network": {
+      "socksProxyPort": 3209
+    }
+  },
+  "alwaysThinkingEnabled": false,
+  "non-env": {
+    "ANTHROPIC_BASE_URL": "http://localhost:8082/",
+    "ANTHROPIC_AUTH_TOKEN": "NotImportant",
+    "ANTHROPIC_MODEL": "gemini-3-pro-preview"
+  }
+}
+
+===============================================================
+
 # Anthropic API Proxy for Gemini & OpenAI Models 🔄
 
 **Use Anthropic clients (like Claude Code) with Gemini, OpenAI, or direct Anthropic backends.** 🤝
